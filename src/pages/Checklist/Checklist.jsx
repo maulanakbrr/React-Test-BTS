@@ -24,8 +24,8 @@ const Checklist = () => {
         
         const { data } = await axios.get('http://18.139.50.74:8080/checklist', config)
 
-        setChecklist(data);
-        
+        setChecklist(data.data);
+        console.log(data);
         console.log(checklist);
     } catch (err) {
         console.error(err.message);
