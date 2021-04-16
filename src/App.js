@@ -1,24 +1,28 @@
-import logo from './logo.svg';
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor } from './redux/store';
+
+import Header from './components/Header/Header';
+
+import LoginPage from './pages/LoginPage/LoginPage';
+import RegisterPage from './pages/RegisterPage/RegisterPage';
+import Checklist from './pages/Checklist/Checklist';
+
 import './App.css';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <PersistGate persistor={ persistor }>
+        <Header/>
+        <Switch>
+          <Route path='/' exact component={LoginPage}/>
+          <Route path='/register' exact component={RegisterPage}/>
+          <Route path='/checklist' exact component={Checklist}/>
+        </Switch>
+      </PersistGate>
+    </Router>
   );
 }
 
