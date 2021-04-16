@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
-import { Container, Form } from 'react-bootstrap';
+import { Container, Form, Button } from 'react-bootstrap';
 
 const Checklist = () => {
   const [checklist, setChecklist] = useState([]);
@@ -68,13 +68,13 @@ const Checklist = () => {
       };
   
       const { data } = await axios.post('http://18.139.50.74:8080/checklist', { name }, config)
-      setName(data);
+      
     } catch (err) {
       console.error(err.message);
     }
   }
 
-  return(
+  return currentUser ? (
     <Container>
       <h2 className="text-center mt-5">Checklist Controller</h2>
 
@@ -91,6 +91,9 @@ const Checklist = () => {
               onChange={e => setName(e.target.value)}
             ></Form.Control>
           </Form.Group>
+          <Button variant="success" type="submit">
+            Submit
+          </Button>
         </Form>
       </div>
       
@@ -105,23 +108,28 @@ const Checklist = () => {
           <tbody>
           
               {
-                  checklist.map(item => (
-                      <tr key={item.checklistId}>
-                          <td>{item.name}</td>
-                          <td>
-                              <button 
-                                  className="btn btn-danger"
-                                  onClick={() => deleteChecklist(item.checklistId)}
-                              >
-                                  Delete
-                              </button>
-                          </td>
-                      </tr>
-                  ))
+                checklist ? 
+                checklist.map(item => (
+                    <tr key={item.checklistId}>
+                        <td>{item.name}</td>
+                        <td>
+                            <button 
+                                className="btn btn-danger"
+                                onClick={() => deleteChecklist(item.checklistId)}
+                            >
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                )) : (
+                  <h3>Data is empty</h3>
+                )
               }
           </tbody>
       </table>
     </Container>
+  ) : (
+    <h2>Please login first at home</h2>
   );
 }
 
